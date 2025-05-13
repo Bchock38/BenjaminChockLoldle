@@ -41,6 +41,7 @@ public class Champion {
     public static void main (String[] args){
 
     }
+    // Check guesses attributes to answer Champion
     public int[] check(Champion newChamp) {
         int[] checked = new int[8];
 
@@ -50,8 +51,8 @@ public class Champion {
         String newPosition = newChamp.getPosition();
         String newResource = newChamp.getResource();
         String newRange = newChamp.getRange();
-        String newRegions = newChamp.getRegions(); // Updated to String
-        String newSkins = newChamp.getSkins(); // Skins is a String
+        String newRegions = newChamp.getRegions();
+        String newSkins = newChamp.getSkins();
 
         // Compare Champion got ? MATCH : NO_MATCH and trim from chatgpt
         checked[0] = newChampion.trim().equals(champion) ? MATCH : NO_MATCH;
@@ -91,6 +92,7 @@ public class Champion {
                 skins
         };
     }
+    // Saves race before parenthesis as race
     public String getRace() {
         if (species == null || species.isBlank()) return "";
 
@@ -103,6 +105,7 @@ public class Champion {
         return species.substring(0, parenIndex).trim().toLowerCase();
     }
 
+    // Removes parenthesis and saves word inside as trait
     public String getTrait() {
         if (species == null || species.isBlank()) return "";
 
@@ -117,13 +120,15 @@ public class Champion {
         return "";
     }
 
+    // Create the imageurl of each champion, so it's image can be accesed
     private String generateImageUrl(String championName) {
 
         if (championName.equalsIgnoreCase("Mel")) {
-            // Replace with the actual path where you store the images locally
+            // Find profile pic of Mel in util folder and replace this link with your own file location
             return "file:///C:/Users/Benjamin%20Chock/Downloads/Loldle/Loldle/src/main/java/com/example/Loldle/util/52ef003ccb9a9464bbb87d72ded0e4ae11b4fe32-496x560.avif";
         }
         else if (championName.equalsIgnoreCase("Ambessa")){
+            // Find  profile pic of Ambessa in util folder and replace this link with your own file location
             return "file:///C:/Users/Benjamin%20Chock/Downloads/Loldle/Loldle/src/main/java/com/example/Loldle/util/1b20e5e8cea542296a62b09dd4a67e81570ce80c-496x560.avif";
         }
 
@@ -145,16 +150,19 @@ public class Champion {
 
         formattedName = builder.toString();
 
+        // Get image from public lol image database
         return "https://ddragon.leagueoflegends.com/cdn/12.6.1/img/champion/" + formattedName + ".png";
     }
 
 
 
+    // Return ImageURL
     public String getImageUrl() {
         return imageUrl;
     }
 
 
+    // Check if positions are match, partial, or no match
     public int checkPositionMatch(String position1, String position2) {
         // Split and normalize both position strings into sets
         Set<String> set1 = new HashSet<>();
@@ -167,12 +175,12 @@ public class Champion {
             set2.add(p.trim().toLowerCase());
         }
 
-        // Full match: all positions exactly the same
+        // Full match:  = all positions exactly the same
         if (set1.equals(set2)) {
             return MATCH; // 0 = full green
         }
 
-        // Partial match: at least one shared position
+        // Partial match = at least one shared position
         for (String pos : set1) {
             if (set2.contains(pos)) {
                 return PARTIAL; // 1 = yellow
@@ -202,11 +210,12 @@ public class Champion {
             return PARTIAL;  // Different race, same trait
         }
 
-        return NO_MATCH;
+        return NO_MATCH; // No matches
     }
 
 
 
+    // Public getters
     public String getChampion(){
         return champion;
     }

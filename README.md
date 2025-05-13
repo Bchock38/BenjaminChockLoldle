@@ -19,6 +19,7 @@ Happy Playing
 <h3>
 How to Install
 </h3>
+Clone Git repository and download spring boot gradle. Next you can copy paste git repo files into new gradle project or look up how to inegrate gradle into an already created project
 </div>
 <div style="margin: auto; width: 60%; text-align: left;" >
 

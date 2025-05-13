@@ -32,14 +32,16 @@ public class LodleBot {
         }
     }
 
+    // Find the most optimal path to guess a champion
     public void playGame() {
         remainingChampions = new ArrayList<>(allChampions);
         while (remainingChampions.size() > 1) {
+            // Use entrophy to find the best next guess
             Champion bestGuess = selectBestGuess();
             chosenChamps.add(bestGuess.getChampion());
             int[] feedbackReceived = getFeedback(bestGuess, remainingChampions.get(0));
+            // Filter out champions that don't match previous champions guessed parameters
             filterRemainingChampions(bestGuess, feedbackReceived);
-            System.out.println("Remaining possible champions: " + remainingChampions.size());
         }
         if (remainingChampions.size() == 1) {
             Champion correctChampion = remainingChampions.get(0);
@@ -47,6 +49,7 @@ public class LodleBot {
         }
     }
 
+    // Find next best guess based on guesses a user made
     public Champion getNextGuess(List<Champion> previousGuesses, List<int[]> feedbacks) {
         List<Champion> simulatedRemaining = new ArrayList<>(allChampions);
         for (int i = 0; i < previousGuesses.size(); i++) {
@@ -61,6 +64,7 @@ public class LodleBot {
         return chosenChamps;
     }
 
+    // Filter out all champions that don't fit paremters after a champion is guessed
     private List<Champion> filterList(List<Champion> list, Champion guess, int[] feedbackReceived) {
         List<Champion> filtered = new ArrayList<>();
         for (Champion champ : list) {
@@ -81,6 +85,7 @@ public class LodleBot {
         return filtered;
     }
 
+    // Use entrophy to select best next guess of all remaining canidates
     private Champion selectBestGuessFromList(List<Champion> candidates) {
         int bestEntropy = Integer.MAX_VALUE;
         Champion bestGuess = null;
@@ -103,6 +108,7 @@ public class LodleBot {
         return selectBestGuessFromList(remainingChampions);
     }
 
+    // Calculate Entrophy (Chat did this for me had no idea to calculate on my own)
     public int calculateEntropy(int[] feedbackDistribution) {
         double entropy = 0.0;
         int total = 0;
@@ -118,6 +124,7 @@ public class LodleBot {
         return (int) (entropy * 100);
     }
 
+    // Make a map saving feedback between all champs to make it an easy look up
     public void makeMap() {
         for (Champion guess : botServe.getChamppool()) {
             Map<String, int[]> innerMap = new HashMap<>();
@@ -135,6 +142,7 @@ public class LodleBot {
         return Arrays.hashCode(feedback);
     }
 
+    // Filter remaining Champions based on feedback recieved
     public void filterRemainingChampions(Champion guess, int[] feedbackReceived) {
         for (int i = 0; i < remainingChampions.size(); i++) {
             Champion currentChampion = remainingChampions.get(i);
@@ -162,6 +170,7 @@ public class LodleBot {
         return target.check(guess);
     }
 
+    // Use JSON to save feedback map to file so you don't need to recreate it every usage
     public void saveFeedbackCacheToFile(String filename) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try (FileWriter writer = new FileWriter(filename)) {
@@ -171,6 +180,7 @@ public class LodleBot {
         }
     }
 
+    // Load in feedback map file
     public void loadFeedbackCacheFromFile(String filename) {
         Gson gson = new Gson();
         try (FileReader reader = new FileReader(filename)) {
