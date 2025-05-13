@@ -1,0 +1,52 @@
+GameService Class
+
+    1. Read Data()
+
+    Time Complexity: O(n), where n is the number of champions.
+
+    Reads in each line of the file which corresponds to the number of champions
+
+    2. createChampionMap()
+
+    Time Complexity: O(n), where n is the number of champions.
+
+    For each champion put them in the map. Twice since I put upper and lowercase put still O(n)
+
+    3. getChampionRecommendations(String prefix)
+
+    Time Complexity: O(k + m)
+
+    Where k is the length of the prefix and m is the number of nodes visited to gather suggestions.
+
+    Prefix traversal is O(k), and collecting recommendations depends on how many matching names exist.
+
+    4. checkGuess()
+    O(1) in gameservice since it just calls the method, but look at check in champions for full runtime
+
+Champion Class
+
+    1. check(Champion newChamp)
+
+    Time Complexity: O(p1 + p2 + c), where p1 is # of position in champion 1 p2 is # of positions in champion 2 and c = length of the species string
+    Most checks are constant, but compare species positions needs to compare all teh positions to each othr same with compare species
+
+    2. checkPositionMatch(String, String)
+
+    Time Complexity: O(p₁ + p₂), where p₁ and p₂ are the number of positions in each string.
+    It splits both strings into sets and checks for equality or intersection.
+
+    3. compareSpecies(Champion other)
+
+    Time Complexity: O(s), where s is the length of the species string.
+    Substring and indexOf operations on short strings.
+
+    4. generateImageUrl(String championName)
+
+    Time Complexity: O(c), where c is the number of characters in the champion name.
+
+    Includes regex replaceAll (linear in input), string splitting, capitalization, and string building.
+
+
+
+
+

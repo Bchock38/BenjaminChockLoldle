@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Loldle Bot</title>
+</head>
+<body>
+<h1>Loldle Bot Guesses</h1>
+<ul>
+    <li th:each="guess : ${botGuesses}" th:text="${guess}"></li>
+</ul>
+
+<a href="/home">
+    <button>Back to Home</button>
+</a>
+</body>
+</html>

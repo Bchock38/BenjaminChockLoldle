@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Loldle - Guess</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 3em;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 90%;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-size: 1.2em;
+        }
+
+        .green {
+            background-color: #d4edda;
+            color: #155724;
+            font-weight: bold;
+        }
+
+        .yellow {
+            background-color: #fff3cd;
+            color: #856404;
+            font-weight: bold;
+        }
+
+        .red {
+            background-color: #f8d7da;
+            color: #721c24;
+            font-weight: bold;
+        }
+
+        .guess-section {
+            margin-top: 30px;
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+
+        .suggestions {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 10px;
+        }
+
+        .suggestions li {
+            background-color: #f2f2f2;
+            padding: 5px;
+            margin: 2px 0;
+            cursor: pointer;
+        }
+
+        .suggestions li:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Welcome to Loldle!</h1>
+
+<div class="result-section">
+    <h2>Guess the Champion</h2>
+</div>
+
+<!-- Guess Form -->
+<div class="guess-section">
+    <form action="/guess" method="post">
+        <label for="guess">Enter your guess:</label>
+        <input type="text" id="guess" name="guess" required oninput="showSuggestions(this.value)" />
+        <button type="submit">Submit Guess</button>
+    </form>
+
+    <!-- Suggestions List -->
+    <ul id="suggestionsList" class="suggestions"></ul>
+</div>
+
+<!-- Error Handling -->
+<div th:if="${error}" class="error">
+    <p th:text="${error}"></p>
+</div>
+
+<!-- Results Table -->
+<div class="result-section" th:if="${guesses}">
+    <table>
+        <thead>
+        <thead>
+        <tr>
+            <th>Image</th>
+            <th>Champion</th>
+            <th>Gender</th>
+            <th>Position(s)</th>
+            <th>Species</th>
+            <th>Resource</th>
+            <th>Range Type</th>
+            <th>Region</th>
+            <th>Skins</th>
+        </tr>
+        </thead>
+
+        </thead>
+        <tbody>
+        <tr th:each="guess : ${guesses}">
+            <!-- Image column -->
+            <td>
+                <img th:src="@{${guess[16]}}" alt="champion image" style="width:50%; height:50%; object-fit:cover;">
+            </td>
+
+            <!-- Champion name -->
+            <td th:text="${guess[0]}"></td>
+
+            <!-- All the color-coded fields -->
+            <td th:text="${guess[9]}" th:classappend="${guess[1] == 'green' ? 'green' : guess[1] == 'yellow' ? 'yellow' : 'red'}"></td>
+            <td th:text="${guess[10]}" th:classappend="${guess[2] == 'green' ? 'green' : guess[2] == 'yellow' ? 'yellow' : 'red'}"></td>
+            <td th:text="${guess[11]}" th:classappend="${guess[3] == 'green' ? 'green' : guess[3] == 'yellow' ? 'yellow' : 'red'}"></td>
+            <td th:text="${guess[12]}" th:classappend="${guess[4] == 'green' ? 'green' : guess[4] == 'yellow' ? 'yellow' : 'red'}"></td>
+            <td th:text="${guess[13]}" th:classappend="${guess[5] == 'green' ? 'green' : guess[5] == 'yellow' ? 'yellow' : 'red'}"></td>
+            <td th:text="${guess[14]}" th:classappend="${guess[6] == 'green' ? 'green' : guess[6] == 'yellow' ? 'yellow' : 'red'}"></td>
+            <td th:text="${guess[15]}" th:classappend="${guess[7] == 'green' ? 'green' : guess[7] == 'yellow' ? 'yellow' : 'red'}"></td>
+        </tr>
+
+
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function showSuggestions(prefix) {
+      if (prefix.length < 1) {
+        document.getElementById('suggestionsList').innerHTML = '';
+        return;
+      }
+
+      fetch(`/suggestions?prefix=${prefix}`)
+        .then(response => response.json())
+        .then(data => {
+          let suggestionsList = document.getElementById('suggestionsList');
+          suggestionsList.innerHTML = ''; // Clear the current suggestions
+
+          data.forEach(suggestion => {
+            let li = document.createElement('li');
+            li.textContent = suggestion;
+            li.onclick = () => selectSuggestion(suggestion); // Allow the user to select a suggestion
+            suggestionsList.appendChild(li);
+          });
+        })
+        .catch(error => console.error('Error fetching suggestions:', error));
+    }
+
+    function selectSuggestion(suggestion) {
+      document.getElementById('guess').value = suggestion;
+      document.getElementById('suggestionsList').innerHTML = ''; // Clear suggestions after selection
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Loldle - You Lost</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 3em;
+        font-weight: bold;
+        color: #4CAF50;
+    }
+
+    table {
+        margin: 20px auto;
+        border-collapse: collapse;
+        width: 90%;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        font-size: 1.2em;
+    }
+
+    .green {
+        background-color: #d4edda;
+        color: #155724;
+        font-weight: bold;
+    }
+
+    .yellow {
+        background-color: #fff3cd;
+        color: #856404;
+        font-weight: bold;
+    }
+
+    .red {
+        background-color: #f8d7da;
+        color: #721c24;
+        font-weight: bold;
+    }
+
+    .win-message {
+        font-size: 2em;
+        font-weight: bold;
+        color: #4CAF50;
+        margin-bottom: 20px;
+    }
+
+    .home-button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .home-button:hover {
+        background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+<h1>You've used all 7 guesses!</h1>
+<h2>The correct champion was: <span th:text="${answer.champion}"></span></h2>
+
+<!-- Results Table -->
+<div class="result-section" th:if="${guesses}">
+  <table>
+    <thead>
+    <thead>
+    <tr>
+      <th>Image</th>
+      <th>Champion</th>
+      <th>Gender</th>
+      <th>Position(s)</th>
+      <th>Species</th>
+      <th>Resource</th>
+      <th>Range Type</th>
+      <th>Region</th>
+      <th>Skins</th>
+    </tr>
+    </thead>
+
+    </thead>
+    <tbody>
+    <tr th:each="guess : ${guesses}">
+      <!-- Image column -->
+      <td>
+        <img th:src="@{${guess[16]}}" alt="champion image" style="width:50%; height:50%; object-fit:cover;">
+      </td>
+
+      <!-- Champion name -->
+      <td th:text="${guess[0]}"></td>
+
+      <!-- All the color-coded fields -->
+      <td th:text="${guess[9]}" th:classappend="${guess[1] == 'green' ? 'green' : guess[1] == 'yellow' ? 'yellow' : 'red'}"></td>
+      <td th:text="${guess[10]}" th:classappend="${guess[2] == 'green' ? 'green' : guess[2] == 'yellow' ? 'yellow' : 'red'}"></td>
+      <td th:text="${guess[11]}" th:classappend="${guess[3] == 'green' ? 'green' : guess[3] == 'yellow' ? 'yellow' : 'red'}"></td>
+      <td th:text="${guess[12]}" th:classappend="${guess[4] == 'green' ? 'green' : guess[4] == 'yellow' ? 'yellow' : 'red'}"></td>
+      <td th:text="${guess[13]}" th:classappend="${guess[5] == 'green' ? 'green' : guess[5] == 'yellow' ? 'yellow' : 'red'}"></td>
+      <td th:text="${guess[14]}" th:classappend="${guess[6] == 'green' ? 'green' : guess[6] == 'yellow' ? 'yellow' : 'red'}"></td>
+      <td th:text="${guess[15]}" th:classappend="${guess[7] == 'green' ? 'green' : guess[7] == 'yellow' ? 'yellow' : 'red'}"></td>
+    </tr>
+
+
+    </tbody>
+  </table>
+</div>
+
+<!-- Home Button -->
+<a href="/home" class="home-button">To Home</a>
+<a href="/loldlebot">
+  <button style="margin-top: 20px; padding: 10px 20px; font-size: 16px;">
+    Click to view Loldle Bot
+  </button>
+</a>
+
+</body>
+</html>
